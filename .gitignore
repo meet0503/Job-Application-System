@@ -1,2 +1,4 @@
 /.metadata/
 **/src/test/**
+.sonarlint/
+**/target/
