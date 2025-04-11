@@ -12,11 +12,15 @@ import com.casestudy.exception.RatingNotFoundException;
 import com.casestudy.payload.ApiResponse;
 import com.casestudy.repository.RatingRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
 
-	@Autowired
-	private RatingRepository ratingRepository;
+	private final RatingRepository ratingRepository;
+	
+	public static final String RATING_NOT_FOUND ="No Ratings found with this id";
 	
 	@Override
 	public List<Rating> getAllRatings(String companyId) {
@@ -26,7 +30,7 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public void addRating(String companyId, Rating rating) {
-		// TODO Auto-generated method stub
+
 		
 		rating.setId(UUID.randomUUID().toString());
 		
@@ -40,14 +44,14 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public Rating findRatingById(String id) {
-		// TODO Auto-generated method stub
-		return ratingRepository.findById(id).orElseThrow(() -> new RatingNotFoundException("No Rating found with this id"));
+
+		return ratingRepository.findById(id).orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
 	}
 
 	@Override
 	public ResponseEntity<ApiResponse> deleteRating(String id) {
 	    Rating rating = ratingRepository.findById(id)
-	        .orElseThrow(() -> new RatingNotFoundException("No Rating found with this id"));
+	        .orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
 
 	    ratingRepository.delete(rating);
 
@@ -63,9 +67,8 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public Rating updateRating(String id, Rating updatedRating) {
-		// TODO Auto-generated method stub
 		Rating existingRating = ratingRepository.findById(id)
-				.orElseThrow(() -> new RatingNotFoundException("No Ratings found with this id"));
+				.orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
 
 		existingRating.setTitle(updatedRating.getTitle());
 		existingRating.setFeedback(updatedRating.getFeedback());

@@ -19,7 +19,9 @@ public class CompanyServiceImpl implements CompanyService {
 	public CompanyServiceImpl(CompanyRepository companyRepository) {
 		this.companyRepository = companyRepository;
 	}
-
+	
+	public static final String COMPANY_NOT_FOUND ="No Company found with this id";
+	
 	@Override
 	public void addCompany(List<Company> companies) {
 
@@ -37,13 +39,13 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public Company findCompanyById(String id) {
 
-		return companyRepository.findById(id).orElseThrow(() -> new CompanyNotFoundException("No Company found with this id"));
+		return companyRepository.findById(id).orElseThrow(() -> new CompanyNotFoundException(COMPANY_NOT_FOUND));
 	}
 
 	@Override
 	public ResponseEntity<ApiResponse> deleteCompany(String id) {
 	    Company company = companyRepository.findById(id)
-	        .orElseThrow(() -> new CompanyNotFoundException("No Company found with this id"));
+	        .orElseThrow(() -> new CompanyNotFoundException(COMPANY_NOT_FOUND));
 
 	    companyRepository.delete(company);
 
@@ -61,7 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company updateCompany(String id, Company updatedCompany) {
 
 		Company existingCompany = companyRepository.findById(id)
-				.orElseThrow(() -> new CompanyNotFoundException("No Company found with this id"));
+				.orElseThrow(() -> new CompanyNotFoundException(COMPANY_NOT_FOUND));
 
 		existingCompany.setName(updatedCompany.getName());
 		existingCompany.setDescription(updatedCompany.getDescription());
