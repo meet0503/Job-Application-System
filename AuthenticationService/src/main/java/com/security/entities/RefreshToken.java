@@ -1,5 +1,6 @@
 package com.security.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,8 +24,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RefreshToken{
+public class RefreshToken implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer tokenId;
