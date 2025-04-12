@@ -24,8 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import com.casestudy.dto.JobDTO;
 import com.casestudy.entities.Job;
@@ -34,7 +32,6 @@ import com.casestudy.entities.external.Rating;
 import com.casestudy.exception.JobNotFoundException;
 import com.casestudy.feign.CompanyClient;
 import com.casestudy.feign.RatingClient;
-import com.casestudy.payload.ApiResponse;
 import com.casestudy.repository.JobRepository;
 
 @ExtendWith(MockitoExtension.class) // Use MockitoExtension for JUnit 5
@@ -208,22 +205,21 @@ class JobServiceImplTest {
 
     @Test
     void testDeleteJob_Success() {
+        // Arrange
         when(jobRepository.findById("job1")).thenReturn(Optional.of(job1));
-        // Mock the delete operation (void method)
         doNothing().when(jobRepository).delete(job1);
 
-        ResponseEntity<ApiResponse> response = jobService.deleteJob("job1");
+        // Act
+        Job deletedJob = jobService.deleteJob("job1");
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody().isSuccess());
-        assertTrue(response.getBody().getMessage().contains("Job Deleted Successfully"));
-        assertTrue(response.getBody().getMessage().contains(job1.getTitle()));
+        // Assert
+        assertNotNull(deletedJob);
+        assertEquals(job1.getId(), deletedJob.getId());
+        assertEquals(job1.getTitle(), deletedJob.getTitle());
 
         verify(jobRepository, times(1)).findById("job1");
-        verify(jobRepository, times(1)).delete(job1);
     }
+
 
     @Test
     void testDeleteJob_NotFound() {

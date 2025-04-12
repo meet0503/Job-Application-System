@@ -3,7 +3,6 @@ package com.casestudy.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -29,7 +28,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.casestudy.config.FeignClientInterceptor;
@@ -41,7 +39,6 @@ import com.casestudy.entities.external.TokenValidationResponse;
 import com.casestudy.exception.GlobalExceptionHandler;
 import com.casestudy.exception.JobNotFoundException;
 import com.casestudy.feign.AuthServiceClient;
-import com.casestudy.payload.ApiResponse;
 import com.casestudy.security.JwtAuthenticationFilter;
 import com.casestudy.security.SecurityConfiguration;
 import com.casestudy.service.JobServiceImpl;
@@ -202,7 +199,7 @@ class JobControllerTest {
     void testCreateJob_Admin_Success() throws Exception {
         // Setup
         ArgumentCaptor<List<Job>> jobCaptor = ArgumentCaptor.forClass(List.class);
-        doNothing().when(jobService).addJob(jobCaptor.capture());
+        when(jobService.addJob(jobCaptor.capture())).thenReturn(jobInputList);
 
         // Execute & Verify
         mockMvc.perform(post("/jobs")
@@ -213,7 +210,7 @@ class JobControllerTest {
                 .andExpect(content().string("Job Created Successfully"));
 
         verify(jobService, times(1)).addJob(any());
-        
+
         // Verify content passed to service
         List<Job> capturedJobs = jobCaptor.getValue();
         assertEquals(jobInputList.size(), capturedJobs.size());
@@ -469,26 +466,23 @@ class JobControllerTest {
     void testDeleteJob_Admin_Success() throws Exception {
         // Setup
         String jobId = "job1";
-        String deleteMessage = "Job Deleted Successfully: Software Engineer (job1)";
-        
-        ApiResponse apiResponse = ApiResponse.builder()
-                .success(true)
-                .message(deleteMessage)
-                .build();
-                
-        ResponseEntity<ApiResponse> responseEntity = ResponseEntity.ok(apiResponse);
-        when(jobService.deleteJob(jobId)).thenReturn(responseEntity);
+        Job deletedJob = new Job();
+        deletedJob.setId(jobId);
+        deletedJob.setTitle("Software Engineer");
+
+        String expectedMessage = "Job with Title " + deletedJob.getTitle() + " is deleted successfully";
+
+        when(jobService.deleteJob(jobId)).thenReturn(deletedJob);
 
         // Execute & Verify
         mockMvc.perform(delete("/jobs/{jobId}", jobId)
                 .header("Authorization", ADMIN_TOKEN))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value(deleteMessage));
+                .andExpect(content().string(expectedMessage));
 
         verify(jobService, times(1)).deleteJob(jobId);
     }
+
 
     @Test
     void testDeleteJob_Admin_NotFound() throws Exception {

@@ -2,6 +2,8 @@ package com.casestudy.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.casestudy.dto.JobDTO;
 import com.casestudy.entities.Job;
-import com.casestudy.payload.ApiResponse;
 import com.casestudy.service.JobServiceImpl;
 
 
@@ -25,49 +26,68 @@ import com.casestudy.service.JobServiceImpl;
 public class JobController {
 	
 	private final JobServiceImpl jobServiceImpl;
+	
+	private static final Logger log = LoggerFactory.getLogger(JobController.class);
 
     // Constructor Injection
     public JobController(JobServiceImpl jobServiceImpl) {
         this.jobServiceImpl = jobServiceImpl;
     }
 	
-	@GetMapping
+    @GetMapping
 	public ResponseEntity<List<JobDTO>> getAllJobs(){
-		return new ResponseEntity<>(jobServiceImpl.findAllJobs(),HttpStatus.OK);	
+		log.info("Received request to get all jobs.");
+		List<JobDTO> jobs = jobServiceImpl.findAllJobs();
+		log.info("Returning {} jobs.", jobs.size());
+		return new ResponseEntity<>(jobs,HttpStatus.OK);	
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
 	public ResponseEntity<String> createJob(@RequestBody List<Job> job){
+		log.info("Received request to create jobs)");
 		if (job == null || job.isEmpty()) {
+			log.warn("Job list is empty or null");
 	        return new ResponseEntity<>("Job list cannot be empty", HttpStatus.BAD_REQUEST);
 	    }
 		
 		jobServiceImpl.addJob(job);
+		log.info("Successfully created jobs");
 		return new ResponseEntity<>("Job Created Successfully",HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{jobId}")
 	public ResponseEntity<JobDTO> findJob(@PathVariable String jobId){
-		return new ResponseEntity<>(jobServiceImpl.findJobById(jobId),HttpStatus.OK);
+		log.info("Received request to find job by ID: {}", jobId);
+		JobDTO jobDTO = jobServiceImpl.findJobById(jobId);
+		log.info("Returning job details for ID: {}", jobId);
+		return new ResponseEntity<>(jobDTO,HttpStatus.OK);
 	}
 	
 	@GetMapping("/company/{companyId}")
     public ResponseEntity<List<JobDTO>> getJobsByCompany(@PathVariable String companyId) {
-        List<JobDTO> jobs = jobServiceImpl.findJobsByCompanyId(companyId);
+        log.info("Received request to get jobs by Company ID: {}", companyId);
+		List<JobDTO> jobs = jobServiceImpl.findJobsByCompanyId(companyId);
+		log.info("Returning {} jobs for Company ID: {}", jobs.size(), companyId);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/{jobId}")
 	public ResponseEntity<Job> updateJob(@PathVariable String jobId, @RequestBody Job job){
-		return new ResponseEntity<>(jobServiceImpl.updateJob(jobId, job),HttpStatus.OK);
+		log.info("Received request to update job with ID: {}", jobId);
+		Job updatedJob = jobServiceImpl.updateJob(jobId, job);
+		log.info("Successfully updated job with ID: {}", jobId);
+		return new ResponseEntity<>(updatedJob,HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/{jobId}")
-	public ResponseEntity<ApiResponse> deleteJob(@PathVariable String jobId){
-		
-		return jobServiceImpl.deleteJob(jobId);
+	public ResponseEntity<String> deleteJob(@PathVariable String jobId){
+		log.info("Received request to delete job with ID: {}", jobId);
+		Job deletedJob = jobServiceImpl.deleteJob(jobId);
+		log.info("Successfully processed delete request for job ID: {}", jobId);
+		String message = "Job with Title " + deletedJob.getTitle()+ " is deleted successfully";
+		return new ResponseEntity<>(message,HttpStatus.OK);
 	}
 }

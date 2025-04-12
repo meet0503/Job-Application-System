@@ -24,6 +24,7 @@ public class JobMapper {
 		return jobDTO;
 	}
 	
+	// so that no one can instantiate the JobMapper
 	private JobMapper() {
 		
 	}
