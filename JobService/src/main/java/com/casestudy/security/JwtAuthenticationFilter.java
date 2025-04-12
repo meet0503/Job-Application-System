@@ -36,12 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Missing Authorization header");
             return;
         }
+
         
         try {
-            // Call auth service to validate token
+            // Call AuthService to validate token
             TokenValidationResponse validationResponse = authServiceClient.validateToken(authHeader);
             
             if (validationResponse.isValid()) {

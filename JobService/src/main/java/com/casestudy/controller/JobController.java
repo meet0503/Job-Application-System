@@ -39,6 +39,10 @@ public class JobController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
 	public ResponseEntity<String> createJob(@RequestBody List<Job> job){
+		if (job == null || job.isEmpty()) {
+	        return new ResponseEntity<>("Job list cannot be empty", HttpStatus.BAD_REQUEST);
+	    }
+		
 		jobServiceImpl.addJob(job);
 		return new ResponseEntity<>("Job Created Successfully",HttpStatus.CREATED);
 	}
