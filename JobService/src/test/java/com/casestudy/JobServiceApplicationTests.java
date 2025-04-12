@@ -8,6 +8,6 @@ class JobServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
+ }
 
 }

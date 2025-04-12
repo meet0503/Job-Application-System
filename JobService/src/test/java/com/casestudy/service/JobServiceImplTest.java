@@ -1,12 +1,22 @@
 package com.casestudy.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +34,6 @@ import com.casestudy.entities.external.Rating;
 import com.casestudy.exception.JobNotFoundException;
 import com.casestudy.feign.CompanyClient;
 import com.casestudy.feign.RatingClient;
-import com.casestudy.mapper.JobMapper; // Although static, useful for context
 import com.casestudy.payload.ApiResponse;
 import com.casestudy.repository.JobRepository;
 
