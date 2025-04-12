@@ -39,4 +39,12 @@ jobs:
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN_API }}
-      
+      - name: Build and analyze JobService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_JOB }}
+        run: |
+          cd JobService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_jobservice \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN_JOB }}
