@@ -40,7 +40,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd job-service && mvn verify sonar:sonar -Dsonar.projectKey=your_project_job -Dsonar.projectName=Job-Service -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../company-service && mvn verify sonar:sonar -Dsonar.projectKey=your_project_company -Dsonar.projectName=Company-Service -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../auth-service && mvn verify sonar:sonar -Dsonar.projectKey=your_project_auth -Dsonar.projectName=Auth-Service -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../gateway-service && mvn verify sonar:sonar -Dsonar.projectKey=your_project_gateway -Dsonar.projectName=Gateway-Service -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd JobService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_job -Dsonar.projectName=JobService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ../CompanyService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_company -Dsonar.projectName=CompanyService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ../AuthenticationService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_auth -Dsonar.projectName=AuthenticationService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ../ApiGateway && mvn verify sonar:sonar -Dsonar.projectKey=your_project_gateway -Dsonar.projectName=ApiGateway -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ../RatingService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_rating -Dsonar.projectName=RatingService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ../ServiceRegistry && mvn verify sonar:sonar -Dsonar.projectKey=your_project_registry -Dsonar.projectName=ServiceRegistry -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
