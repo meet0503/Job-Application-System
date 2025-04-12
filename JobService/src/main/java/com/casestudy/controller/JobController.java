@@ -36,7 +36,7 @@ public class JobController {
 	
     @GetMapping
 	public ResponseEntity<List<JobDTO>> getAllJobs(){
-		log.info("Received request to get all jobs.");
+		
 		List<JobDTO> jobs = jobServiceImpl.findAllJobs();
 		log.info("Returning {} jobs.", jobs.size());
 		return new ResponseEntity<>(jobs,HttpStatus.OK);	
@@ -45,7 +45,7 @@ public class JobController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
 	public ResponseEntity<String> createJob(@RequestBody List<Job> job){
-		log.info("Received request to create jobs)");
+		
 		if (job == null || job.isEmpty()) {
 			log.warn("Job list is empty or null");
 	        return new ResponseEntity<>("Job list cannot be empty", HttpStatus.BAD_REQUEST);
@@ -58,7 +58,7 @@ public class JobController {
 	
 	@GetMapping("/{jobId}")
 	public ResponseEntity<JobDTO> findJob(@PathVariable String jobId){
-		log.info("Received request to find job by ID: {}", jobId);
+		
 		JobDTO jobDTO = jobServiceImpl.findJobById(jobId);
 		log.info("Returning job details for ID: {}", jobId);
 		return new ResponseEntity<>(jobDTO,HttpStatus.OK);
@@ -66,7 +66,7 @@ public class JobController {
 	
 	@GetMapping("/company/{companyId}")
     public ResponseEntity<List<JobDTO>> getJobsByCompany(@PathVariable String companyId) {
-        log.info("Received request to get jobs by Company ID: {}", companyId);
+        
 		List<JobDTO> jobs = jobServiceImpl.findJobsByCompanyId(companyId);
 		log.info("Returning {} jobs for Company ID: {}", jobs.size(), companyId);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class JobController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/{jobId}")
 	public ResponseEntity<Job> updateJob(@PathVariable String jobId, @RequestBody Job job){
-		log.info("Received request to update job with ID: {}", jobId);
+		
 		Job updatedJob = jobServiceImpl.updateJob(jobId, job);
 		log.info("Successfully updated job with ID: {}", jobId);
 		return new ResponseEntity<>(updatedJob,HttpStatus.OK);
@@ -84,7 +84,7 @@ public class JobController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/{jobId}")
 	public ResponseEntity<String> deleteJob(@PathVariable String jobId){
-		log.info("Received request to delete job with ID: {}", jobId);
+		
 		Job deletedJob = jobServiceImpl.deleteJob(jobId);
 		log.info("Successfully processed delete request for job ID: {}", jobId);
 		String message = "Job with Title " + deletedJob.getTitle()+ " is deleted successfully";
