@@ -39,7 +39,8 @@ jobs:
             -Dsonar.projectName=ApiGateway \
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.projectCreation=true
       - name: Build and analyze AuthenticationService
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -49,7 +50,8 @@ jobs:
             -Dsonar.projectName=AuthenticationService \
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.projectCreation=true
       - name: Build and analyze CompanyService
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -59,7 +61,8 @@ jobs:
             -Dsonar.projectName=CompanyService \
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.projectCreation=true
       - name: Build and analyze JobService
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -69,7 +72,8 @@ jobs:
             -Dsonar.projectName=JobService \
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.projectCreation=true
       - name: Build and analyze RatingService
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -79,7 +83,8 @@ jobs:
             -Dsonar.projectName=RatingService \
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.projectCreation=true
       - name: Build and analyze ServiceRegistry
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
