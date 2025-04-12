@@ -1,48 +1,86 @@
 name: SonarQube
-
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
   build:
-    name: Build and analyze all services
+    name: Build and analyze Job Application System
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'
-
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze all microservices
+      - name: Build and analyze ApiGateway
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd JobService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_job -Dsonar.projectName=JobService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../CompanyService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_company -Dsonar.projectName=CompanyService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../AuthenticationService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_auth -Dsonar.projectName=AuthenticationService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../ApiGateway && mvn verify sonar:sonar -Dsonar.projectKey=your_project_gateway -Dsonar.projectName=ApiGateway -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../RatingService && mvn verify sonar:sonar -Dsonar.projectKey=your_project_rating -Dsonar.projectName=RatingService -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          cd ../ServiceRegistry && mvn verify sonar:sonar -Dsonar.projectKey=your_project_registry -Dsonar.projectName=ServiceRegistry -Dsonar.organization=your_org -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          cd ApiGateway && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze AuthenticationService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd AuthenticationService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze CompanyService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd CompanyService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze JobService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd JobService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze RatingService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd RatingService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze ServiceRegistry
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd ServiceRegistry && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_Job-Application-System \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
