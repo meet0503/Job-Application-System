@@ -38,7 +38,7 @@ public class JobController {
 	public ResponseEntity<List<JobDTO>> getAllJobs(){
 		
 		List<JobDTO> jobs = jobServiceImpl.findAllJobs();
-		log.info("Returning {} jobs.", jobs.size());
+		
 		return new ResponseEntity<>(jobs,HttpStatus.OK);	
 	}
 	
@@ -52,7 +52,7 @@ public class JobController {
 	    }
 		
 		jobServiceImpl.addJob(job);
-		log.info("Successfully created jobs");
+		
 		return new ResponseEntity<>("Job Created Successfully",HttpStatus.CREATED);
 	}
 	
@@ -60,7 +60,7 @@ public class JobController {
 	public ResponseEntity<JobDTO> findJob(@PathVariable String jobId){
 		
 		JobDTO jobDTO = jobServiceImpl.findJobById(jobId);
-		log.info("Returning job details for ID: {}", jobId);
+		
 		return new ResponseEntity<>(jobDTO,HttpStatus.OK);
 	}
 	
@@ -68,7 +68,7 @@ public class JobController {
     public ResponseEntity<List<JobDTO>> getJobsByCompany(@PathVariable String companyId) {
         
 		List<JobDTO> jobs = jobServiceImpl.findJobsByCompanyId(companyId);
-		log.info("Returning {} jobs for Company ID: {}", jobs.size(), companyId);
+		
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 	
@@ -77,7 +77,7 @@ public class JobController {
 	public ResponseEntity<Job> updateJob(@PathVariable String jobId, @RequestBody Job job){
 		
 		Job updatedJob = jobServiceImpl.updateJob(jobId, job);
-		log.info("Successfully updated job with ID: {}", jobId);
+		
 		return new ResponseEntity<>(updatedJob,HttpStatus.OK);
 	}
 	
@@ -86,7 +86,7 @@ public class JobController {
 	public ResponseEntity<String> deleteJob(@PathVariable String jobId){
 		
 		Job deletedJob = jobServiceImpl.deleteJob(jobId);
-		log.info("Successfully processed delete request for job ID: {}", jobId);
+		
 		String message = "Job with Title " + deletedJob.getTitle()+ " is deleted successfully";
 		return new ResponseEntity<>(message,HttpStatus.OK);
 	}
