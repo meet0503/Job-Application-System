@@ -48,4 +48,12 @@ jobs:
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN_JOB }}
-	
+      - name: Build and analyze CompanyService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_COMPANY }}
+        run: |
+          cd CompanyService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_companyservice \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN_COMPANY }}
