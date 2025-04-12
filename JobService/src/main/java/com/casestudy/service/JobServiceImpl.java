@@ -35,7 +35,7 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public List<Job> addJob(List<Job> jobs) {
-        log.info("Adding {} job(s)", jobs.size());
+        
         jobs.forEach(job -> {
             if (job.getCompanyId() == null || job.getCompanyId().isEmpty()) {
                 log.error("Job creation failed - Company ID is missing");
@@ -48,7 +48,7 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public List<JobDTO> findAllJobs() {
-        log.info("Retrieving all jobs");
+       
         List<Job> jobs = jobRepository.findAll();
         List<JobDTO> jobDTOs = new ArrayList<>();
         
@@ -65,7 +65,7 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public JobDTO findJobById(String id) {
-        log.info("Searching for job with ID: {}", id);
+        
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Job with ID {} not found", id);
@@ -80,11 +80,12 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public List<JobDTO> findJobsByCompanyId(String companyId) {
-        log.info("Searching for jobs with company ID: {}", companyId);
+        
         List<Job> jobs = jobRepository.findByCompanyId(companyId);
         List<JobDTO> jobDTOs = new ArrayList<>();
         
         if (jobs.isEmpty()) {
+        	log.warn("There are no jobs for the specific companyId");
             return jobDTOs;
         }
         
@@ -101,7 +102,7 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public Job deleteJob(String id) {
-        log.info("Deleting job with ID: {}", id);
+        
         Job job = jobRepository.findById(id)
             .orElseThrow(() -> {
                 log.warn("Delete failed - Job with ID {} not found", id);
@@ -114,7 +115,7 @@ public class JobServiceImpl implements JobService {
     
     @Override
     public Job updateJob(String id, Job job) {
-        log.info("Updating job with ID: {}", id);
+        
         Job existingJob = jobRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Update failed - Job with ID {} not found", id);
