@@ -56,7 +56,7 @@ class JobServiceImplTest {
     private Job job2;
     private Company company1;
     private List<Rating> ratings1;
-    private JobDTO jobDTO1;
+    
 
     @BeforeEach
     void setUp() {
@@ -67,10 +67,7 @@ class JobServiceImplTest {
         job1 = new Job("job1", "Software Engineer", "Develop awesome software", "80000", "120000", "Remote", "comp1");
         job2 = new Job("job2", "Data Analyst", "Analyze data trends", "70000", "100000", "New York", "comp1");
 
-        // Use the actual mapper logic within the test context if needed, or mock static if complex
-        // For simplicity, we'll create the DTO manually here based on expected mapping
-        jobDTO1 = new JobDTO("job1", "Software Engineer", "Develop awesome software", "80000", "120000", "Remote", company1, ratings1);
-
+        
     }
 
     @Test

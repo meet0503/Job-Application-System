@@ -65,8 +65,6 @@ class JobControllerTest {
 
     private JobDTO jobDTO1;
     private JobDTO jobDTO2;
-    private Job job1;
-    private Job job2;
     private List<Job> jobInputList;
     private Company company1;
     private List<Rating> ratings1;
@@ -106,26 +104,6 @@ class JobControllerTest {
             ratings1
         );
         
-        // Setup Job entities (without Company and Ratings)
-        job1 = new Job(
-            "job1", 
-            "Software Engineer", 
-            "Develop awesome software", 
-            "80000", 
-            "120000", 
-            "Remote", 
-            "comp1"
-        );
-        
-        job2 = new Job(
-            "job2", 
-            "Data Scientist", 
-            "Analyze data and create models", 
-            "90000", 
-            "140000", 
-            "Hybrid", 
-            "comp1"
-        );
         
         // Setup input jobs for POST request (without IDs as they'll be generated)
         Job jobInput1 = new Job(

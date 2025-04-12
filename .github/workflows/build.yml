@@ -57,3 +57,12 @@ jobs:
             -Dsonar.organization=meet0503 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN_COMPANY }}
+      - name: Build and analyze RatingService
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_RATING }}
+        run: |
+          cd RatingService && mvn verify sonar:sonar \
+            -Dsonar.projectKey=meet0503_ratingservice \
+            -Dsonar.organization=meet0503 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN_RATING }}
