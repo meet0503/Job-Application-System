@@ -30,6 +30,7 @@ import com.casestudy.entities.Job;
 import com.casestudy.entities.external.Company;
 import com.casestudy.entities.external.Rating;
 import com.casestudy.exception.JobNotFoundException;
+import com.casestudy.exception.CompanyNotFoundException;
 import com.casestudy.feign.CompanyClient;
 import com.casestudy.feign.RatingClient;
 import com.casestudy.repository.JobRepository;
@@ -83,14 +84,25 @@ class JobServiceImplTest {
     
     @Test
     void testAddJob_Failure_MissingCompanyId() {
-        List<Job> jobsToAdd = Collections.singletonList(new Job(null, "QA Tester", "Test software", "60k", "90k", "Austin", null)); // Missing companyId
+        // Test null companyId case
+        Job nullCompanyIdJob = new Job(null, "QA Tester", "Test software", "60k", "90k", "Austin", null);
+        List<Job> jobsWithNullCompanyId = Collections.singletonList(nullCompanyIdJob);
 
-        // Assert that IllegalArgumentException is thrown
-        assertThrows(IllegalArgumentException.class, () -> {
-            jobService.addJob(jobsToAdd);
+        // Exception is thrown for null companyId
+        assertThrows(CompanyNotFoundException.class, () -> {
+            jobService.addJob(jobsWithNullCompanyId);
+        });
+        
+        // Test empty companyId case
+        Job emptyCompanyIdJob = new Job("", "QA Tester", "Test software", "60k", "90k", "Austin", null);
+        List<Job> jobsWithEmptyCompanyId = Collections.singletonList(emptyCompanyIdJob);
+        
+        // Exception is thrown for empty companyId
+        assertThrows(CompanyNotFoundException.class, () -> {
+            jobService.addJob(jobsWithEmptyCompanyId);
         });
 
-        // Verify that saveAll was *not* called
+        // Verify that saveAll was *not* called in either case
         verify(jobRepository, never()).saveAll(anyList());
     }
 

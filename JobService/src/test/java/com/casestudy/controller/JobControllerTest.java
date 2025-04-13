@@ -36,6 +36,7 @@ import com.casestudy.entities.Job;
 import com.casestudy.entities.external.Company;
 import com.casestudy.entities.external.Rating;
 import com.casestudy.entities.external.TokenValidationResponse;
+import com.casestudy.exception.CompanyNotFoundException;
 import com.casestudy.exception.GlobalExceptionHandler;
 import com.casestudy.exception.JobNotFoundException;
 import com.casestudy.feign.AuthServiceClient;
@@ -230,7 +231,7 @@ class JobControllerTest {
     void testCreateJob_Admin_MissingCompanyId() throws Exception {
         // Setup
         List<Job> invalidJobs = Arrays.asList(new Job(null, "Invalid Job", "Missing company ID", "50000", "80000", "Remote", null));
-        doThrow(new IllegalArgumentException("Company ID is required"))
+        doThrow(new CompanyNotFoundException("Company ID is required"))
             .when(jobService).addJob(any());
 
         // Execute & Verify
@@ -238,9 +239,9 @@ class JobControllerTest {
                 .header("Authorization", ADMIN_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidJobs)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Invalid input: Company ID is required"));
+                .andExpect(jsonPath("$.message").value("Company ID is required"));
 
         verify(jobService, times(1)).addJob(any());
     }
