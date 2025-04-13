@@ -3,12 +3,10 @@ package com.casestudy.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.casestudy.entities.Company;
 import com.casestudy.exception.CompanyNotFoundException;
-import com.casestudy.payload.ApiResponse;
 import com.casestudy.repository.CompanyRepository;
 
 @Service
@@ -43,19 +41,12 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse> deleteCompany(String id) {
+	public Company deleteCompany(String id) {
 	    Company company = companyRepository.findById(id)
 	        .orElseThrow(() -> new CompanyNotFoundException(COMPANY_NOT_FOUND));
 
 	    companyRepository.delete(company);
-
-	    String message = "Job Deleted Successfully: " + company.getName();
-	    ApiResponse response = ApiResponse.builder()
-	        .message(message)
-	        .success(true)
-	        .build();
-
-	    return ResponseEntity.ok(response);
+	    return company;
 	}
 
 

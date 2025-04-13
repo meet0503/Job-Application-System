@@ -10,6 +10,7 @@ import com.casestudy.dto.JobDTO;
 import com.casestudy.entities.Job;
 import com.casestudy.entities.external.Company;
 import com.casestudy.entities.external.Rating;
+import com.casestudy.exception.CompanyNotFoundException;
 import com.casestudy.exception.JobNotFoundException;
 import com.casestudy.feign.CompanyClient;
 import com.casestudy.feign.RatingClient;
@@ -39,7 +40,7 @@ public class JobServiceImpl implements JobService {
         jobs.forEach(job -> {
             if (job.getCompanyId() == null || job.getCompanyId().isEmpty()) {
                 log.error("Job creation failed - Company ID is missing");
-                throw new IllegalArgumentException("Company ID is required");
+                throw new CompanyNotFoundException("Company ID is required");
             }
             job.setId(UUID.randomUUID().toString());
         });

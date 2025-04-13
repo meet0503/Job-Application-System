@@ -2,10 +2,7 @@ package com.casestudy.service;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.casestudy.entities.Rating;
-import com.casestudy.payload.ApiResponse;
 
 public interface RatingService {
 	//create
@@ -17,7 +14,7 @@ public interface RatingService {
 	Rating findRatingById(String id);
 	
 	//delete 
-	ResponseEntity<ApiResponse> deleteRating(String id);
+	Rating deleteRating(String id);
 	
 	//update
 	Rating updateRating(String id, Rating job);

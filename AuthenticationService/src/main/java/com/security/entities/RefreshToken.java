@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class RefreshToken implements Serializable{
 	private Instant expirationTime;
 	
 	@OneToOne
+	@JoinColumn(name = "user_id") 
 	@JsonBackReference
 	private User user;
 

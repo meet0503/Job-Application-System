@@ -3,12 +3,11 @@ package com.casestudy.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.casestudy.entities.Rating;
+import com.casestudy.exception.CompanyNotFoundException;
 import com.casestudy.exception.RatingNotFoundException;
-import com.casestudy.payload.ApiResponse;
 import com.casestudy.repository.RatingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,9 +32,11 @@ public class RatingServiceImpl implements RatingService {
 		
 		rating.setId(UUID.randomUUID().toString());
 		
-		//add companyId not null check
+		//added companyId not null check
+		if(companyId==null || companyId.isEmpty()) {
+			throw new CompanyNotFoundException("CompanyId is either blank or null");
+		}
 		rating.setCompanyId(companyId);
-		
 		
 		ratingRepository.save(rating);
 	}
@@ -48,19 +49,12 @@ public class RatingServiceImpl implements RatingService {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse> deleteRating(String id) {
+	public Rating deleteRating(String id) {
 	    Rating rating = ratingRepository.findById(id)
 	        .orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
 
 	    ratingRepository.delete(rating);
-
-	    String message = "Rating Deleted Successfully: " + rating.getTitle();
-	    ApiResponse response = ApiResponse.builder()
-	        .message(message)
-	        .success(true)
-	        .build();
-
-	    return ResponseEntity.ok(response);
+	    return rating;
 	}
 
 

@@ -27,6 +27,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
 
+    
+    @ExceptionHandler(CompanyNotFoundException.class)
+	public ResponseEntity<ApiResponse> handleCompanyNotFoundException(CompanyNotFoundException e){
+		String message = e.getMessage();
+		log.warn("Handling CompanyNotFoundException: {}", message);
+		ApiResponse apiResponse = ApiResponse.builder()
+			.message(message)
+			.success(false)
+			.build();
+		
+		return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+	}
+    
+    
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ApiResponse> handleFeignException(FeignException e) {
         String message = "Error from external service: " + e.getMessage();
@@ -37,17 +51,5 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(apiResponse);
-    }
-    
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse> handleIllegalArgumentException(IllegalArgumentException e) {
-        String message = "Invalid input: " + e.getMessage();
-        log.warn("Handling IllegalArgumentException: {}", message, e);
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message(message)
-                .success(false)
-                .build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 }
