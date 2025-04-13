@@ -53,7 +53,7 @@ public class JobController {
 		
 		jobServiceImpl.addJob(job);
 		
-		return new ResponseEntity<>("Job Created Successfully",HttpStatus.CREATED);
+		return new ResponseEntity<>("Jobs Created Successfully",HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{jobId}")
