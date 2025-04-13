@@ -35,6 +35,9 @@ public class CompanyController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
 	public ResponseEntity<String> createCompany(@RequestBody List<Company> company){
+		if (company == null || company.isEmpty()) {			
+	        return new ResponseEntity<>("Job list cannot be empty", HttpStatus.BAD_REQUEST);
+	    }
 		companyServiceImpl.addCompany(company);
 		return new ResponseEntity<>("Company Created Successfully",HttpStatus.CREATED);
 	}
