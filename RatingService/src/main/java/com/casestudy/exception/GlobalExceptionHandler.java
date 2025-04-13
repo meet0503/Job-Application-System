@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.casestudy.payload.ApiResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(RatingNotFoundException.class)
 	public ResponseEntity<ApiResponse> handleRatingNotFoundException(RatingNotFoundException e){
 		String message = e.getMessage();
+		log.warn("Handling RatingNotFoundException: {}", message);
 		ApiResponse apiResponse = ApiResponse.builder()
 			.message(message)
 			.success(false)
@@ -24,6 +28,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(CompanyNotFoundException.class)
 	public ResponseEntity<ApiResponse> handleCompanyNotFoundException(CompanyNotFoundException e){
 		String message = e.getMessage();
+		log.warn("Handling CompanyNotFoundException: {}", message);
 		ApiResponse apiResponse = ApiResponse.builder()
 			.message(message)
 			.success(false)

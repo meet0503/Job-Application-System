@@ -11,7 +11,9 @@ import com.casestudy.exception.RatingNotFoundException;
 import com.casestudy.repository.RatingRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
@@ -34,6 +36,7 @@ public class RatingServiceImpl implements RatingService {
 		
 		//added companyId not null check
 		if(companyId==null || companyId.isEmpty()) {
+			log.error("Rating creation failed - Company ID is missing");
 			throw new CompanyNotFoundException("CompanyId is either blank or null");
 		}
 		rating.setCompanyId(companyId);
@@ -45,13 +48,18 @@ public class RatingServiceImpl implements RatingService {
 	@Override
 	public Rating findRatingById(String id) {
 
-		return ratingRepository.findById(id).orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
+		return ratingRepository.findById(id).orElseThrow(() -> {
+			log.warn("Rating with ID {} not found", id);
+			throw new RatingNotFoundException(RATING_NOT_FOUND);
+		});
 	}
 
 	@Override
 	public Rating deleteRating(String id) {
-	    Rating rating = ratingRepository.findById(id)
-	        .orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
+	    Rating rating = ratingRepository.findById(id).orElseThrow(() -> {
+			log.warn("Delete failed - Rating with ID {} not found", id);
+			throw new RatingNotFoundException(RATING_NOT_FOUND);
+		});
 
 	    ratingRepository.delete(rating);
 	    return rating;
@@ -60,8 +68,10 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public Rating updateRating(String id, Rating updatedRating) {
-		Rating existingRating = ratingRepository.findById(id)
-				.orElseThrow(() -> new RatingNotFoundException(RATING_NOT_FOUND));
+		Rating existingRating = ratingRepository.findById(id).orElseThrow(() -> {
+			log.warn("Update failed - Rating with ID {} not found", id);
+			throw new RatingNotFoundException(RATING_NOT_FOUND);
+		});
 
 		existingRating.setTitle(updatedRating.getTitle());
 		existingRating.setFeedback(updatedRating.getFeedback());
