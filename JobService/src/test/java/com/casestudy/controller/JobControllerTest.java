@@ -208,7 +208,7 @@ class JobControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(jobInputList)))
                 .andExpect(status().isCreated())
-                .andExpect(content().string("Job Created Successfully"));
+                .andExpect(content().string("Jobs Created Successfully"));
 
         verify(jobService, times(1)).addJob(any());
 
