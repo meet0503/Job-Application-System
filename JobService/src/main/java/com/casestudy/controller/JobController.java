@@ -87,7 +87,7 @@ public class JobController {
 		
 		Job deletedJob = jobServiceImpl.deleteJob(jobId);
 		
-		String message = "Job with Title " + deletedJob.getTitle()+ " is deleted successfully";
+		String message = "Job with title " + deletedJob.getTitle()+ " is deleted successfully";
 		return new ResponseEntity<>(message,HttpStatus.OK);
 	}
 }

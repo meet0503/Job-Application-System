@@ -231,7 +231,7 @@ class JobControllerTest {
     void testCreateJob_Admin_MissingCompanyId() throws Exception {
         // Setup
         List<Job> invalidJobs = Arrays.asList(new Job(null, "Invalid Job", "Missing company ID", "50000", "80000", "Remote", null));
-        doThrow(new CompanyNotFoundException("Company ID is required"))
+        doThrow(new CompanyNotFoundException("Company ID is must"))
             .when(jobService).addJob(any());
 
         // Execute & Verify
@@ -241,7 +241,7 @@ class JobControllerTest {
                 .content(objectMapper.writeValueAsString(invalidJobs)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Company ID is required"));
+                .andExpect(jsonPath("$.message").value("Company ID is must"));
 
         verify(jobService, times(1)).addJob(any());
     }
@@ -471,7 +471,7 @@ class JobControllerTest {
         deletedJob.setId(jobId);
         deletedJob.setTitle("Software Engineer");
 
-        String expectedMessage = "Job with Title " + deletedJob.getTitle() + " is deleted successfully";
+        String expectedMessage = "Job with title " + deletedJob.getTitle() + " is deleted successfully";
 
         when(jobService.deleteJob(jobId)).thenReturn(deletedJob);
 
