@@ -58,7 +58,8 @@ class CompanyServiceImplTest {
         companyService.addCompany(companiesToAdd);
 
         // Assert
-        ArgumentCaptor<List<Company>> captor = ArgumentCaptor.forClass(List.class);
+        @SuppressWarnings("unchecked")
+		ArgumentCaptor<List<Company>> captor = ArgumentCaptor.forClass(List.class);
         verify(companyRepository, times(1)).saveAll(captor.capture()); // Verify saveAll was called once
 
         List<Company> savedCompanies = captor.getValue();

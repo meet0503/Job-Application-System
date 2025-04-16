@@ -1,5 +1,8 @@
 package com.casestudy.controller;
 
+// For jsonPath checks like is() and hasSize()
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 // Static imports from Mockito and Spring Test
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -17,7 +20,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.*; // For jsonPath checks like is() and hasSize()
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,9 +30,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor; // Import ArgumentCaptor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.casestudy.entities.Company;
@@ -52,10 +54,10 @@ class CompanyControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean // Mock the service layer
+    @MockitoBean // Mock the service layer
     private CompanyServiceImpl companyService;
 
-    @MockBean // Mock the Feign client used by the security filter
+    @MockitoBean // Mock the Feign client used by the security filter
     private AuthServiceClient authServiceClient;
 
     @Autowired // For converting objects to JSON
